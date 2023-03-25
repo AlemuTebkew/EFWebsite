@@ -115,14 +115,9 @@ export default defineComponent({
       ],
 
     });
- 
+
     onBeforeMount(() => {
-      options.value.dataset.source = source.value.map((s) => {
-        return {
-          title:s.title,
-          progress:s.progress
-        };
-      })
+      options.value.dataset.source = source.value
     });
     const items = computed(() => {
       return [

@@ -74,8 +74,6 @@
                       dense
                       v-model="user_details.l_name"
                       label="Last Name"
-
-
                     />
                   </q-item-section>
                 </q-item>
@@ -120,12 +118,10 @@
                       dense
                       v-model="user_details.gender"
                       label="Gender"
-                      :options="['Male','Female']"
-
+                      :options="['Male', 'Female']"
                     />
                   </q-item-section>
                 </q-item>
-
 
                 <q-item class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                   <q-item-section>
@@ -140,7 +136,6 @@
                       dense
                       v-model="user_details.department_id"
                       label="Department"
-
                     />
                   </q-item-section>
                 </q-item>
@@ -167,7 +162,6 @@
                       dense
                       v-model="user_details.quote"
                       label="Quote"
-
                     />
                   </q-item-section>
                 </q-item>
@@ -179,11 +173,9 @@
                       dense
                       v-model="user_details.empId"
                       label="Employee Id"
-
                     />
                   </q-item-section>
                 </q-item>
-
 
                 <q-item class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                   <q-item-section>
@@ -199,7 +191,10 @@
               </q-list>
             </q-card-section>
             <q-card-actions align="right">
-              <q-btn :loading="loading" class="text-capitalize bg-info text-white" type="submit"
+              <q-btn
+                :loading="loading"
+                class="text-capitalize bg-info text-white"
+                type="submit"
                 >Save Team Info</q-btn
               >
               <q-btn
@@ -217,9 +212,9 @@
 
 <script>
 import { defineComponent, ref, reactive } from "vue";
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter, useRoute } from "vue-router";
 import { api } from "src/boot/axios";
-import { useQuasar,Loading } from "quasar";
+import { useQuasar, Loading } from "quasar";
 export default defineComponent({
   name: "AddTeam",
 
@@ -235,10 +230,10 @@ export default defineComponent({
       gender: "",
       empId: "",
       department_id: "",
-      quote:"",
-      is_active:false,
+      quote: "",
+      is_active: false,
     });
-    const loading=ref(false);
+    const loading = ref(false);
     const url = ref("");
     const photo = ref("");
     const services = ref([]);
@@ -252,71 +247,71 @@ export default defineComponent({
     }
 
     async function onSubmit() {
-      loading.value=true;
+      loading.value = true;
 
       const formData = new FormData();
-      Object.keys(user_details.value).forEach((key) =>
-        formData.append(key, user_details.value[key])
-      );
+      Object.keys(user_details.value).forEach((key) => {
+        if (key === "is_active") {
+          formData.append(key, user_details.value[key] ? 1 : 0);
+        } else {
+          formData.append(key, user_details.value[key]);
+        }
+      });
 
-      if(photo.value)
-      formData.append("photo", photo.value);
+      if (photo.value) formData.append("photo", photo.value);
 
       // console.log("formData", formData);
       loading.value = true;
       try {
-        const response = await api.post("/teams/"+route.query.id+'?_method=PUT', formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        const response = await api.post(
+          "/teams/" + route.query.id + "?_method=PUT",
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
         $q.notify({ color: "green", message: "Successfully updated" });
         router.push("/team");
       } catch (error) {
         $q.notify({ color: "red", message: "Error While updating" });
-
       } finally {
         loading.value = false;
-
       }
     }
 
-    const fetchServices=async () => {
+    const fetchServices = async () => {
       try {
-
-         Loading.show();
+        Loading.show();
         console.log("res", "response.data");
         const response = await api.get("/services");
-        const res = await api.get("/teams/"+route.query.id);
+        const res = await api.get("/teams/" + route.query.id);
         // this.showDialog = false;
-        user_details.value.f_name=res.data.f_name
-        user_details.value.l_name=res.data.l_name
-        user_details.value.m_name=res.data.m_name
-        user_details.value.email=res.data.email
-        user_details.value.phone_no=res.data.phone_no
-        user_details.value.profession=res.data.profession
-        user_details.value.empId=res.data.empId
-        user_details.value.gender=res.data.gender
-        user_details.value.department_id=res.data.department_id
-        user_details.value.quote=res.data.quote
-        user_details.value.is_active=res.data.is_active
+        user_details.value.f_name = res.data.f_name;
+        user_details.value.l_name = res.data.l_name;
+        user_details.value.m_name = res.data.m_name;
+        user_details.value.email = res.data.email;
+        user_details.value.phone_no = res.data.phone_no;
+        user_details.value.profession = res.data.profession;
+        user_details.value.empId = res.data.empId;
+        user_details.value.gender = res.data.gender;
+        user_details.value.department_id = res.data.department_id;
+        user_details.value.quote = res.data.quote;
+        user_details.value.is_active = res.data.is_active ? true : false;
         // photo.value=res.data.photo
-        url.value=res.data.photo
+        url.value = res.data.photo;
         services.value = response.data;
-
       } catch (error) {
       } finally {
-         Loading.hide();
-
+        Loading.hide();
       }
     };
 
-
     fetchServices();
-    const toggleActive=()=>{
-
-user_details.value.is_active = !user_details.value.is_active ? true : false;
-
-
-}
+    const toggleActive = () => {
+      user_details.value.is_active = !user_details.value.is_active
+        ? true
+        : false;
+    };
     return {
       fetchServices,
       toggleActive,

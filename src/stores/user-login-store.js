@@ -81,10 +81,9 @@ export const useAuthStore = defineStore("login", {
   },
     async logout() {
       this.authUser = null;
-      localStorage.setItem("token", "");
-      localStorage.setItem("user", "");
+      localStorage.clear()
       this.isAuthenticated = false;
-       await api.post('/logout')
+       const re=await api.post('/logout')
       this.router.push("/login");
     },
 

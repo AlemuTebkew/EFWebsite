@@ -105,7 +105,7 @@ export default defineComponent({
           message:
             "Error Your Account Not Exist",
           color: "red",
-          timeout: "10000",
+          timeout: "1000",
           position: "center",
         });
         }
@@ -115,7 +115,7 @@ export default defineComponent({
           message:
             "Error Your Account Not Exist",
           color: "red",
-          timeout: "10000",
+          timeout: "1000",
           position: "center",
         });
       } finally {
