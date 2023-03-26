@@ -4,7 +4,7 @@
       <div class="text-h6 text-white">
         <q-space />
         <q-btn
-          v-if="hasPermission('update role')"
+          v-if="hasPermission('add role')"
           label="Add New Role"
           color="blue"
           class="float-right text-capitalize shadow-3"
@@ -33,6 +33,8 @@
             <q-item style="width: 50px">
               <q-item-section>
                 <q-btn
+                v-if="hasPermission('view permission')"
+
                   label="Permissions"
                   color="blue"
                   :to="'/permission?id=' + props.row.id"
@@ -308,7 +310,7 @@ export default defineComponent({
 
         return perm?.some((p) => p.title.toLowerCase() == sperm);
       }
-    };
+    }
     return {
       hasPermission,
       columns,

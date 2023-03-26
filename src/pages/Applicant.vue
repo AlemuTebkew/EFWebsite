@@ -22,7 +22,7 @@
         :rows="filteredByJob"
         :columns="columns"
         auto-width
-        :pagination="{rowsPerPage:15}"
+        :pagination="{ rowsPerPage: 15 }"
       >
         <template v-slot:top-right>
           <q-select
@@ -129,7 +129,7 @@ const columns = [
 import { defineComponent, ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router"; // <- import useRoute here
 import { api } from "boot/axios";
-import { Loading,useQuasar,Notify } from "quasar";
+import { Loading, useQuasar, Notify } from "quasar";
 import { useJobStore } from "src/stores/job_store";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
@@ -139,13 +139,13 @@ export default defineComponent({
   setup() {
     const applicants = ref([]);
     const loading = ref(false);
-    const selected=ref('')
-    const $q=useQuasar()
+    const selected = ref("");
+    const $q = useQuasar();
     const jobStore = useJobStore();
     const dash = useDashStore();
 
-    const {noti} =storeToRefs(dash)
-    const {jobs}= storeToRefs(jobStore)
+    const { noti } = storeToRefs(dash);
+    const { jobs } = storeToRefs(jobStore);
 
     const confirmDelete = (id) => {
       $q.dialog({
@@ -169,20 +169,20 @@ export default defineComponent({
         });
     };
 
-   const fetchApplicants=async () => {
+    const fetchApplicants = async () => {
       try {
         loading.value = true;
-        noti.value =  noti.value.filter((n) => n.data.type !== "job");
+        noti.value = noti.value.filter((n) => n.data.type !== "job");
 
         // Loading.show();
         console.log("res", "response.data");
-        const response = await api.get("/applicants");
+        const response = await api.get("/get_applicants");
         // this.showDialog = false;
         applicants.value = response.data;
-        const re = await api.get("/jobs");
-         jobs.value=re.data
+        const re = await api.get("/get_jobs");
+        jobs.value = re.data;
         console.log("res", response.data);
-      } catch (error) {
+      } catch (error) { 
       } finally {
         // Loading.hide();
 
@@ -214,12 +214,11 @@ export default defineComponent({
       }
     }
 
-    const filteredByJob=computed(()=>{
-
-
-      return selected.value ?  applicants.value.filter((a)=>a.job_id === selected.value) :applicants.value
-
-    })
+    const filteredByJob = computed(() => {
+      return selected.value
+        ? applicants.value.filter((a) => a.job_id === selected.value)
+        : applicants.value;
+    });
     return {
       filteredByJob,
       user_details: {},
@@ -231,9 +230,10 @@ export default defineComponent({
       loading,
       jobs,
       jobStore,
-      deleteApplicant,fetchApplicants,
+      deleteApplicant,
+      fetchApplicants,
       confirmDelete,
-      selected
+      selected,
     };
   },
 });

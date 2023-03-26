@@ -4,15 +4,13 @@
       <q-card-section class="row">
         <q-space />
         <q-btn
-        v-if="hasPermision('add gallery')"
-
+          v-if="hasPermission('add gallery')"
           icon="add"
           label="Add Gallery"
           class="float-right text-white"
           color="blue"
           to="addGallery"
         />
-
       </q-card-section>
       <q-card-section class="row">
         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
@@ -23,13 +21,7 @@
             outlined
             style="min-width: 200px"
             v-model="category"
-            :options="[
-              'All',
-              'Cermony',
-              'Project',
-              'Designed',
-              'Certificate',
-            ]"
+            :options="['All', 'Cermony', 'Project', 'Designed', 'Certificate']"
             class="float-right"
             label="Category"
           />
@@ -89,7 +81,7 @@ import { computed, defineComponent, onMounted } from "vue";
 import { ref } from "vue";
 import { Loading, useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import { useRoute,useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 // const data = [
 //   // {
@@ -104,9 +96,7 @@ export default defineComponent({
   /* eslint-disable */
   name: "Gallery",
   setup() {
-
-
-    const router=useRouter()
+    const router = useRouter();
     const editGallery = (id) => {
       // store.oneNews = store.allNews.find((n) => n.id == id);
       router.push("/editGallery?id=" + id);
@@ -141,6 +131,20 @@ export default defineComponent({
         Loading.hide();
       }
     });
+
+    const hasPermission = (sperm) => {
+      const user = JSON.parse(localStorage.getItem("user"));
+      console.log("ul", user.role.permissions);
+      if (user?.role?.permissions) {
+        console.log("ul2", user.role.permissions);
+
+        const perm = user.role?.permissions;
+        console.log("ul3", user.role.permissions);
+
+        return perm?.some((p) => p.title.toLowerCase() == sperm);
+      }
+    };
+
     const galleries = ref([]);
     const category = ref("All");
     const page = ref(1);
@@ -156,10 +160,11 @@ export default defineComponent({
       currentPage,
       nextPage,
       perPage,
+      hasPermission,
       onMounted,
       getData2,
       getData,
-      editGallery
+      editGallery,
     };
   },
 });

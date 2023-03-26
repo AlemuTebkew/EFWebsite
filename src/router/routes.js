@@ -6,46 +6,218 @@ const routes = [
     children: [
       { path: "", component: () => import("src/pages/Dashboared.vue") },
       { path: "setting", component: () => import("src/pages/Setting.vue") },
-      { path: "service", component: () => import("src/pages/Service.vue") },
+      {
+        path: "service",
+        component: () => import("src/pages/Service.vue"),
+        beforeEnter: (to, from) => {
+          // reject the navigation
+          const user = JSON.parse(localStorage.getItem("user"));
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("view service")
+          );
+
+          return access ? true : from.path;
+        },
+      },
       {
         path: "requested",
         component: () => import("src/pages/RequestedService.vue"),
       },
-      { path: "project", component: () => import("src/pages/Project.vue") },
-      { path: "news", component: () => import("src/pages/News.vue") },
-      { path: "client", component: () => import("src/pages/Client.vue") },
-      { path: "gallery", component: () => import("src/pages/Gallery.vue") },
-      { path: "team", component: () => import("src/pages/Team.vue") },
-      { path: "role", component: () => import("src/pages/Role.vue") },
-      { path: "category", component: () => import("src/pages/Category.vue") },
+      {
+        path: "project",
+        component: () => import("src/pages/Project.vue"),
+        beforeEnter: (to, from) => {
+          // reject the navigation
+          const user = JSON.parse(localStorage.getItem("user"));
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("view project")
+          );
+
+          return access ? true : from.path;
+        },
+      },
+      {
+        path: "news",
+        component: () => import("src/pages/News.vue"),
+        beforeEnter: (to, from) => {
+          // reject the navigation
+          const user = JSON.parse(localStorage.getItem("user"));
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("view news")
+          );
+
+          return access ? true : from.path;
+        },
+      },
+      {
+        path: "client",
+        component: () => import("src/pages/Client.vue"),
+        beforeEnter: (to, from) => {
+          // reject the navigation
+          const user = JSON.parse(localStorage.getItem("user"));
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("view client")
+          );
+
+          return access ? true : from.path;
+        },
+      },
+      {
+        path: "gallery",
+        component: () => import("src/pages/Gallery.vue"),
+        beforeEnter: (to, from) => {
+          // reject the navigation
+          const user = JSON.parse(localStorage.getItem("user"));
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("view gallery")
+          );
+
+          return access ? true : from.path;
+        },
+      },
+      {
+        path: "team",
+        component: () => import("src/pages/Team.vue"),
+        beforeEnter: (to, from) => {
+          // reject the navigation
+          const user = JSON.parse(localStorage.getItem("user"));
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("view team")
+          );
+
+          return access ? true : from.path;
+        },
+      },
+      {
+        path: "role",
+        component: () => import("src/pages/Role.vue"),
+        beforeEnter: (to, from) => {
+          // reject the navigation
+          const user = JSON.parse(localStorage.getItem("user"));
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("view role")
+          );
+
+          return access ? true : from.path;
+        },
+      },
+      {
+        path: "category",
+        component: () => import("src/pages/Category.vue"),
+        beforeEnter: (to, from) => {
+          // reject the navigation
+          const user = JSON.parse(localStorage.getItem("user"));
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("view project")
+          );
+
+          return access ? true : from.path;
+        },
+      },
       {
         path: "department",
         component: () => import("src/pages/Department.vue"),
-      },
-      { path: "job", component: () => import("src/pages/Job.vue") },
-      { path: "editJob", component: () => import("src/pages/EditJob.vue") },
-      { path: "applicant", component: () => import("src/pages/Applicant.vue"),
-      beforeEnter: (to, from) => {
-        // reject the navigation
-        const user = JSON.parse(localStorage.getItem("user"));
-       const access= user.role?.permissions?.some((p)=>p.title.toLowerCase().includes('view applicant'))
+        beforeEnter: (to, from) => {
+          // reject the navigation
+          const user = JSON.parse(localStorage.getItem("user"));
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("view permission")
+          );
 
-        return access? true: from.path
-      }, },
+          return access ? true : from.path;
+        },
+      },
+      {
+        path: "job",
+        component: () => import("src/pages/Job.vue"),
+        beforeEnter: (to, from) => {
+          // reject the navigation
+          const user = JSON.parse(localStorage.getItem("user"));
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("view job")
+          );
+
+          return access ? true : from.path;
+        },
+      },
+      {
+        path: "editJob",
+        component: () => import("src/pages/EditJob.vue"),
+        beforeEnter: (to, from) => {
+          // reject the navigation
+          const user = JSON.parse(localStorage.getItem("user"));
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("edit job")
+          );
+
+          return access ? true : from.path;
+        },
+      },
+      {
+        path: "applicant",
+        component: () => import("src/pages/Applicant.vue"),
+        beforeEnter: (to, from) => {
+          // reject the navigation
+          const user = JSON.parse(localStorage.getItem("user"));
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("view applicant")
+          );
+
+          return access ? true : from.path;
+        },
+      },
       { path: "task", component: () => import("src/pages/Task.vue") },
-      { path: "profile", component: () => import("src/pages/UserProfile.vue")},
-      { path: "addTeam", component: () => import("src/pages/AddTeam.vue") },
-      { path: "editTeam", component: () => import("src/pages/EditTeam.vue") },
-      { path: "viewApplicant", component: () => import("src/pages/ViewApplicant.vue") },
+      { path: "profile", component: () => import("src/pages/UserProfile.vue") },
+      {
+        path: "addTeam",
+        component: () => import("src/pages/AddTeam.vue"),
+        beforeEnter: (to, from) => {
+          // reject the navigation
+          const user = JSON.parse(localStorage.getItem("user"));
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("add team")
+          );
+
+          return access ? true : from.path;
+        },
+      },
+      {
+        path: "editTeam",
+        component: () => import("src/pages/EditTeam.vue"),
+        beforeEnter: (to, from) => {
+          // reject the navigation
+          const user = JSON.parse(localStorage.getItem("user"));
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("edit team")
+          );
+
+          return access ? true : from.path;
+        },
+      },
+      {
+        path: "viewApplicant",
+        component: () => import("src/pages/ViewApplicant.vue"),
+        beforeEnter: (to, from) => {
+          // reject the navigation
+          const user = JSON.parse(localStorage.getItem("user"));
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("view applicant")
+          );
+
+          return access ? true : from.path;
+        },
+      },
       {
         path: "addGallery",
         component: () => import("src/pages/AddGallery.vue"),
         beforeEnter: (to, from) => {
           // reject the navigation
           const user = JSON.parse(localStorage.getItem("user"));
-         const access= user.role?.permissions?.some((p)=>p.title.toLowerCase().includes('add gallery'))
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("add gallery")
+          );
 
-          return access? true: from.path
+          return access ? true : from.path;
         },
       },
       {
@@ -54,14 +226,25 @@ const routes = [
         beforeEnter: (to, from) => {
           // reject the navigation
           const user = JSON.parse(localStorage.getItem("user"));
-         const access= user.role?.permissions?.some((p)=>p.title.toLowerCase().includes('update gallery'))
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("update gallery")
+          );
 
-          return access? true: from.path
+          return access ? true : from.path;
         },
       },
       {
         path: "editProject",
         component: () => import("src/pages/EditProject.vue"),
+        beforeEnter: (to, from) => {
+          // reject the navigation
+          const user = JSON.parse(localStorage.getItem("user"));
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("edit project")
+          );
+
+          return access ? true : from.path;
+        },
       },
       {
         path: "editService",
@@ -69,9 +252,11 @@ const routes = [
         beforeEnter: (to, from) => {
           // reject the navigation
           const user = JSON.parse(localStorage.getItem("user"));
-         const access= user.role?.permissions?.some((p)=>p.title.toLowerCase().includes('update service'))
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("update service")
+          );
 
-          return access? true: from.path
+          return access ? true : from.path;
         },
       },
       {
@@ -80,9 +265,11 @@ const routes = [
         beforeEnter: (to, from) => {
           // reject the navigation
           const user = JSON.parse(localStorage.getItem("user"));
-         const access= user.role?.permissions?.some((p)=>p.title.toLowerCase().includes('update news'))
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("update news")
+          );
 
-          return access? true: from.path
+          return access ? true : from.path;
         },
       },
       {
@@ -91,10 +278,11 @@ const routes = [
         beforeEnter: (to, from) => {
           // reject the navigation
           const user = JSON.parse(localStorage.getItem("user"));
-         const access= user.role?.permissions?.some((p)=>p.title.toLowerCase().includes('view permission'))
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("view permission")
+          );
 
-          // return access? true: from.path
-          return  true
+          return access ? true : from.path;
         },
       },
       {
@@ -103,9 +291,11 @@ const routes = [
         beforeEnter: (to, from) => {
           // reject the navigation
           const user = JSON.parse(localStorage.getItem("user"));
-         const access= user.role?.permissions?.some((p)=>p.title.toLowerCase().includes('view user'))
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("view user")
+          );
 
-          return access? true: from.path
+          return access ? true : from.path;
         },
       },
       {
@@ -114,9 +304,11 @@ const routes = [
         beforeEnter: (to, from) => {
           // reject the navigation
           const user = JSON.parse(localStorage.getItem("user"));
-         const access= user.role?.permissions?.some((p)=>p.title.toLowerCase().includes('add user'))
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("add user")
+          );
 
-          return access? true: from.path
+          return access ? true : from.path;
         },
       },
       {
@@ -125,9 +317,11 @@ const routes = [
         beforeEnter: (to, from) => {
           // reject the navigation
           const user = JSON.parse(localStorage.getItem("user"));
-         const access= user.role?.permissions?.some((p)=>p.title.toLowerCase().includes('update user'))
+          const access = user.role?.permissions?.some((p) =>
+            p.title.toLowerCase().includes("update user")
+          );
 
-          return access? true: from.path
+          return access ? true : from.path;
         },
       },
       {
