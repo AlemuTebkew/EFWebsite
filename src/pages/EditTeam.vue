@@ -250,6 +250,8 @@ export default defineComponent({
       loading.value = true;
 
       const formData = new FormData();
+
+      
       Object.keys(user_details.value).forEach((key) => {
         if (key === "is_active") {
           formData.append(key, user_details.value[key] ? 1 : 0);

@@ -121,7 +121,7 @@ const routes = [
           // reject the navigation
           const user = JSON.parse(localStorage.getItem("user"));
           const access = user.role?.permissions?.some((p) =>
-            p.title.toLowerCase().includes("view permission")
+            p.title.toLowerCase().includes("view department")
           );
 
           return access ? true : from.path;

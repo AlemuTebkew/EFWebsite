@@ -30,6 +30,7 @@ export const useAuthStore = defineStore("login", {
       localStorage.setItem("token", token);
     },
     async login(data) {
+      localStorage.clear();
       this.loading = true;
       this.error=''
       try {

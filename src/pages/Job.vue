@@ -6,7 +6,7 @@
           <div class="text-black">List Of Jobs</div>
           <q-space />
           <q-btn
-          v-if="hasPermision('add job')"
+          v-if="hasPermission('add Job')"
 
             label="Add New Job"
             color="blue"
@@ -41,6 +41,7 @@
           <template v-slot:body-cell-action="props">
             <q-td :props="props">
               <q-btn
+              v-if="hasPermission('View Job')"
                 icon="remove_red_eye"
                 size="sm"
                 flat
@@ -49,6 +50,8 @@
               >
               </q-btn>
               <q-btn
+              v-if="hasPermission('Delete Job')"
+
                 icon="delete"
                 size="sm"
                 class="q-ml-sm"
@@ -226,7 +229,8 @@
             label="Select Department"
           />
           <q-input
-            disable
+          :disable="!dataStore.editableState"
+
             dense
             filled
             v-model="deadline"
@@ -254,12 +258,7 @@
             </template>
           </q-input>
 
-          <q-toggle
-            :model-value="is_active"
-            @update:model-value="toggle()"
-            label="toggle job status"
-          >
-          </q-toggle>
+        
           <q-separator />
 
           <div class="row q-gutter-md">
@@ -532,8 +531,23 @@ export default defineComponent({
       title.value = "";
     };
 
+    const hasPermission = (sperm) => {
+      const user = JSON.parse(localStorage.getItem("user"));
+      console.log("ul", user.role.permissions);
+      if (user?.role?.permissions) {
+        console.log("ul2", user.role.permissions);
+
+        const perm = user.role?.permissions;
+        console.log("ul3", user.role.permissions);
+
+        return perm?.some((p) => p.title.toLowerCase() == sperm.toLowerCase());
+      }
+    };
+
+
     return {
       convertDdate,
+      hasPermission,
       table,
       jobs,
       departments,

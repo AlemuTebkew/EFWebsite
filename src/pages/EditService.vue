@@ -381,8 +381,8 @@ export default defineComponent({
         );
 
         if (response.status == 200) {
-          imageUrl.value = [];
-          newPhoto.value = [];
+          imageUrl.value = '';
+          newPhoto.value = '';
           photo.value = response.data;
           Notify.create({
             message: "Photo Uploaded Successfully",
