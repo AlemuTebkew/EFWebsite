@@ -14,7 +14,7 @@
               </div>
             </div>
           </q-card-section>
-     
+
           <q-form @submit="onSubmit">
             <q-card-section class="q-px-lg q-mx-lg">
               <q-list
@@ -67,90 +67,97 @@
                       class="text-black"
                       label="Description"
                       :toolbar="[
-        [
-          {
-            label: $q.lang.editor.align,
-            icon: $q.iconSet.editor.align,
-            fixedLabel: true,
-            list: 'only-icons',
-            options: ['left', 'center', 'right', 'justify']
-          },
-          {
-            label: $q.lang.editor.align,
-            icon: $q.iconSet.editor.align,
-            fixedLabel: true,
-            options: ['left', 'center', 'right', 'justify']
-          }
-        ],
-        ['bold', 'italic', 'strike', 'underline', 'subscript', 'superscript'],
-        ['token', 'hr', 'link', 'custom_btn'],
-        ['print', 'fullscreen'],
-        [
-          {
-            label: $q.lang.editor.formatting,
-            icon: $q.iconSet.editor.formatting,
-            list: 'no-icons',
-            options: [
-              'p',
-              'h1',
-              'h2',
-              'h3',
-              'h4',
-              'h5',
-              'h6',
-              'code'
-            ]
-          },
-          {
-            label: $q.lang.editor.fontSize,
-            icon: $q.iconSet.editor.fontSize,
-            fixedLabel: true,
-            fixedIcon: true,
-            list: 'no-icons',
-            options: [
-              'size-1',
-              'size-2',
-              'size-3',
-              'size-4',
-              'size-5',
-              'size-6',
-              'size-7'
-            ]
-          },
-          {
-            label: $q.lang.editor.defaultFont,
-            icon: $q.iconSet.editor.font,
-            fixedIcon: true,
-            list: 'no-icons',
-            options: [
-              'default_font',
-              'arial',
-              'arial_black',
-              'comic_sans',
-              'courier_new',
-              'impact',
-              'lucida_grande',
-              'times_new_roman',
-              'verdana'
-            ]
-          },
-          'removeFormat'
-        ],
-        ['quote', 'unordered', 'ordered', 'outdent', 'indent'],
+                        [
+                          {
+                            label: $q.lang.editor.align,
+                            icon: $q.iconSet.editor.align,
+                            fixedLabel: true,
+                            list: 'only-icons',
+                            options: ['left', 'center', 'right', 'justify'],
+                          },
+                          {
+                            label: $q.lang.editor.align,
+                            icon: $q.iconSet.editor.align,
+                            fixedLabel: true,
+                            options: ['left', 'center', 'right', 'justify'],
+                          },
+                        ],
+                        [
+                          'bold',
+                          'italic',
+                          'strike',
+                          'underline',
+                          'subscript',
+                          'superscript',
+                        ],
+                        ['token', 'hr', 'link', 'custom_btn'],
+                        ['print', 'fullscreen'],
+                        [
+                          {
+                            label: $q.lang.editor.formatting,
+                            icon: $q.iconSet.editor.formatting,
+                            list: 'no-icons',
+                            options: [
+                              'p',
+                              'h1',
+                              'h2',
+                              'h3',
+                              'h4',
+                              'h5',
+                              'h6',
+                              'code',
+                            ],
+                          },
+                          {
+                            label: $q.lang.editor.fontSize,
+                            icon: $q.iconSet.editor.fontSize,
+                            fixedLabel: true,
+                            fixedIcon: true,
+                            list: 'no-icons',
+                            options: [
+                              'size-1',
+                              'size-2',
+                              'size-3',
+                              'size-4',
+                              'size-5',
+                              'size-6',
+                              'size-7',
+                            ],
+                          },
+                          {
+                            label: $q.lang.editor.defaultFont,
+                            icon: $q.iconSet.editor.font,
+                            fixedIcon: true,
+                            list: 'no-icons',
+                            options: [
+                              'default_font',
+                              'arial',
+                              'arial_black',
+                              'comic_sans',
+                              'courier_new',
+                              'impact',
+                              'lucida_grande',
+                              'times_new_roman',
+                              'verdana',
+                            ],
+                          },
+                          'removeFormat',
+                        ],
+                        ['quote', 'unordered', 'ordered', 'outdent', 'indent'],
 
-        ['undo', 'redo'],
-        ['viewsource']
-      ]"
-      :fonts="{
-        arial: 'Arial',
-        arial_black: 'Arial Black',
-        comic_sans: 'Comic Sans MS',
-        courier_new: 'Courier New',
-        impact: 'Impact',
-        lucida_grande: 'Lucida Grande',
-        times_new_roman: 'Times New Roman',
-        verdana: 'Verdana'
-      }"
+                        ['undo', 'redo'],
+                        ['viewsource'],
+                      ]"
+                      :fonts="{
+                        arial: 'Arial',
+                        arial_black: 'Arial Black',
+                        comic_sans: 'Comic Sans MS',
+                        courier_new: 'Courier New',
+                        impact: 'Impact',
+                        lucida_grande: 'Lucida Grande',
+                        times_new_roman: 'Times New Roman',
+                        verdana: 'Verdana',
+                      }"
                     />
                   </q-item-section>
                 </q-item>
@@ -171,40 +178,50 @@
             </q-card-section>
 
             <q-card-section class="q-px-sm q-mx-lg q-mb-lg">
-              <q-file
-                v-if="editable"
-                accept=".jpg, image/*"
-                color="white"
-                class="bg-white"
-                filled
-                v-model="icon"
-                label="Upload Icon"
-                :rules="[(val) => val || 'Please Select something']"
-              >
-                <template v-slot:prepend>
-                  <q-icon name="cloud_upload" />
-                </template>
-              </q-file>
-
               <!-- <div class="col-4"> -->
               <q-item-label class="q-ma-lg">Service Photo</q-item-label>
               <!-- </div> -->
               <div class="row q-px-sm q-mx-lg q-mb-lg">
-                <div class="col-lg-12 col-md-12 col-sm-12 q-mb-sm " style="position: relative;">
+                <div
+                  class="col-lg-12 col-md-12 col-sm-12 q-mb-sm"
+                  style="position: relative"
+                >
                   <q-img
                     :src="photo"
                     spinner-color="white"
                     style="height: 400px; width: 90%"
                     alt="Hello"
                   />
-                  <q-btn v-if="editable" color="red" icon="cancel"
-                  style="position: absolute; right: -3px; top: 0px; z-index: 1"
-
+                  <q-btn
+                    v-if="editable"
+                    color="red"
+                    icon="cancel"
+                    style="
+                      position: absolute;
+                      right: -3px;
+                      top: 0px;
+                      z-index: 1;
+                    "
                   ></q-btn>
                 </div>
               </div>
             </q-card-section>
             <q-card-section class="q-px-sm q-mx-lg q-mb-lg">
+              <div class="q-pa-sm q-ma-sm">
+                <q-file
+                  v-if="editable"
+                  accept=".jpg, image/*"
+                  color="white"
+                  class="bg-white"
+                  outlined
+                  v-model="icon"
+                  label="Upload Icon"
+                  >
+                  <template v-slot:prepend>
+                    <q-icon name="cloud_upload" />
+                  </template>
+                </q-file>
+              </div>
               <div class="q-px-sm q-mx-sm">
                 <q-file
                   v-if="editable"
@@ -242,7 +259,7 @@
               </div>
             </q-card-section>
             <q-card-actions
-              v-if="imageUrl"
+              v-if="imageUrl || icon"
               align="right"
               class="q-px-sm q-mx-lg q-mb-lg"
             >
@@ -251,7 +268,7 @@
                 @click="uploadImage"
                 :loading="loading"
                 no-caps
-                >Upload New Gallery</q-btn
+                >Upload Service Logo|Photo</q-btn
               >
               <!-- <q-btn
                 class="text-capitalize bg-info text-white"
@@ -343,8 +360,15 @@ export default defineComponent({
       try {
         const formData = new FormData();
 
+        if(newPhoto.value){
         formData.append("photo", newPhoto.value);
-        formData.append("logo", newLogo.value);
+
+        }
+
+        if(icon.value){
+        formData.append("icon", icon.value);
+
+        }
 
         const response = await api.post(
           "/update_service_img/" + route.query.id,
@@ -361,13 +385,13 @@ export default defineComponent({
           newPhoto.value = [];
           photo.value = response.data;
           Notify.create({
-            message: "Service Added Successfully",
+            message: "Photo Uploaded Successfully",
             color: "green",
           });
         }
       } catch (error) {
         Notify.create({
-          message: "Error While Adding Service",
+          message:error.message || "Error While Uploading",
           color: "red",
         });
       } finally {

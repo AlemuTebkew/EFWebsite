@@ -4,13 +4,15 @@
       <q-card-section class="row">
         <q-space />
         <q-btn
+        v-if="hasPermision('add gallery')"
+
           icon="add"
           label="Add Gallery"
           class="float-right text-white"
           color="blue"
           to="addGallery"
         />
-        
+
       </q-card-section>
       <q-card-section class="row">
         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">

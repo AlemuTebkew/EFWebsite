@@ -6,6 +6,8 @@
           <div class="text-black">List Of Jobs</div>
           <q-space />
           <q-btn
+          v-if="hasPermision('add job')"
+
             label="Add New Job"
             color="blue"
             class="float-right text-capitalize shadow-3"

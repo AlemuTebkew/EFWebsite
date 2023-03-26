@@ -76,9 +76,10 @@
       </q-item>
     </q-expansion-item>
 
-    <q-expansion-item class="text-bold" label="Projects" icon="work">
+    <q-expansion-item class="text-bold" label="Projects" icon="work"
+       v-if="hasPermision('view project')"
+>
       <q-item
-        v-if="hasPermision('view category')"
         clickable
         to="/category"
         style="margin-left: 10px !important"
@@ -92,7 +93,6 @@
         </q-item-section>
       </q-item>
       <q-item
-        v-if="hasPermision('view project')"
         clickable
         to="/project"
         class="text-white"
@@ -106,7 +106,10 @@
         </q-item-section>
       </q-item>
     </q-expansion-item>
-    <q-item clickable to="/client" class="text-white">
+    <q-item clickable to="/client" class="text-white"
+    v-if="hasPermision('view client')"
+
+    >
       <q-item-section avatar>
         <q-icon name="handshake" />
       </q-item-section>
@@ -114,7 +117,12 @@
         <q-item-label class="text-bold">Client|Partner</q-item-label>
       </q-item-section>
     </q-item>
-    <q-item clickable to="/gallery" class="text-white">
+    <q-item clickable to="/gallery" class="text-white"
+    v-if="hasPermision('view gallery')"
+
+    >
+
+
       <q-item-section avatar>
         <q-icon name="collections" />
       </q-item-section>
@@ -127,6 +135,8 @@
       class="text-bold"
       label="Jobs"
       icon="work"
+      v-if="hasPermision('view applicant') || hasPermision('view department') || hasPermision('view applicant') "
+
     >
       <q-item
         style="margin-left: 10px !important"
