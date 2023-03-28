@@ -250,8 +250,6 @@ export default defineComponent({
       loading.value = true;
 
       const formData = new FormData();
-
-      
       Object.keys(user_details.value).forEach((key) => {
         if (key === "is_active") {
           formData.append(key, user_details.value[key] ? 1 : 0);
@@ -262,11 +260,11 @@ export default defineComponent({
 
       if (photo.value) formData.append("photo", photo.value);
 
-      // console.log("formData", formData);
+       console.log("formData", formData);
       loading.value = true;
       try {
         const response = await api.post(
-          "/teams/" + route.query.id + "?_method=PUT",
+          "/teams/"+route.query.id + "?_method=PUT",
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },

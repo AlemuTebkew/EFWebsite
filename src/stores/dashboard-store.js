@@ -12,7 +12,9 @@ export const useDashStore = defineStore('dash', {
   getters: {
   },
   actions: {
-    addTeam(team) {
+    setSource(data) {
+
+      this.source=data
     },
   },
 });

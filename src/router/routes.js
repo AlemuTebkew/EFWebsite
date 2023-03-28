@@ -4,7 +4,12 @@ const routes = [
     component: () => import("layouts/MainLayout.vue"),
 
     children: [
-      { path: "", component: () => import("src/pages/Dashboared.vue") },
+      { path: "", component: () => import("src/pages/Dashboared.vue"),
+      beforeEnter: (to, from) => {
+
+
+        return true ;
+      } },
       { path: "setting", component: () => import("src/pages/Setting.vue") },
       {
         path: "service",
@@ -147,7 +152,7 @@ const routes = [
           // reject the navigation
           const user = JSON.parse(localStorage.getItem("user"));
           const access = user.role?.permissions?.some((p) =>
-            p.title.toLowerCase().includes("edit job")
+            p.title.toLowerCase().includes("update job")
           );
 
           return access ? true : from.path;
@@ -188,7 +193,7 @@ const routes = [
           // reject the navigation
           const user = JSON.parse(localStorage.getItem("user"));
           const access = user.role?.permissions?.some((p) =>
-            p.title.toLowerCase().includes("edit team")
+            p.title.toLowerCase().includes("update team")
           );
 
           return access ? true : from.path;
@@ -240,7 +245,7 @@ const routes = [
           // reject the navigation
           const user = JSON.parse(localStorage.getItem("user"));
           const access = user.role?.permissions?.some((p) =>
-            p.title.toLowerCase().includes("edit project")
+            p.title.toLowerCase().includes("update project")
           );
 
           return access ? true : from.path;

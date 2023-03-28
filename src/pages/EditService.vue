@@ -184,12 +184,11 @@
               <div class="row q-px-sm q-mx-lg q-mb-lg">
                 <div
                   class="col-lg-12 col-md-12 col-sm-12 q-mb-sm"
-                  style="position: relative"
                 >
                   <q-img
                     :src="photo"
                     spinner-color="white"
-                    style="height: 400px; width: 90%"
+                    style="height: 400px; width: 80%"
                     alt="Hello"
                   />
                   <q-btn
@@ -198,9 +197,7 @@
                     icon="cancel"
                     style="
                       position: absolute;
-                      right: -3px;
-                      top: 0px;
-                      z-index: 1;
+
                     "
                   ></q-btn>
                 </div>

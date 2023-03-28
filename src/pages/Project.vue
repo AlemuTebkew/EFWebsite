@@ -19,7 +19,24 @@
         <div>Project Lists</div>
 
         <div class="row items-center">
+          <q-input
+              class="q-pa-none q-mr-sm"
+              dense
+              debounce="300"
+              v-model="search"
+              placeholder="Search ..."
+              outlined
+              color="white"
+            dark
+
+            >
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+
           <q-select
+          style="min-width: 200px;"
             outlined
             v-model="type"
 
@@ -31,6 +48,7 @@
             dense
             color="white"
             dark
+            label="filter by Category"
           />
 
           <q-tabs
@@ -44,7 +62,7 @@
             <q-tab class="active" name="active" label="Completed" />
             <q-tab name="inactive" label="In Completed">
               <q-badge color="red q-ml-sm" floating>{{
-                projects.filter((project) => !project.is_completed).length
+                projects.filter((project) => project.progress != 100).length
               }}</q-badge>
             </q-tab>
           </q-tabs>
@@ -62,6 +80,8 @@
         dense
         bordered
         square
+        :pagination="{rowsPerPage:20}"
+        :filter="search"
       >
         <template v-slot:body-cell-Photo="props">
           <q-td :props="props">
@@ -80,7 +100,7 @@
         </template>
         <template v-slot:body-cell-Status="props">
           <q-td :props="props">
-            {{ props.row.is_completed ? "Completed" : "In completed" }}
+            {{ props.row.progress == 100 ? "Completed" : "In completed" }}
           </q-td>
         </template>
 
@@ -378,13 +398,7 @@ const columns = [
     sortable: true,
     align: "left",
   },
-  {
-    name: "Type",
-    label: "Type",
-    field: "type",
-    sortable: true,
-    align: "left",
-  },
+
   {
     name: "Progress",
     label: "Progress",
@@ -422,6 +436,7 @@ export default defineComponent({
     const title = ref("");
     const category = ref("");
     const type = ref("");
+    const search = ref("");
     const progress = ref("");
     const loading = ref(false);
     const description = ref("");
@@ -466,8 +481,8 @@ export default defineComponent({
         ? categorizedProjects.value
         : categorizedProjects.value.filter((project) => {
             return tab.value == "active"
-              ? project.is_completed == 1
-              : project.is_completed == 0;
+              ? project.progress == 100
+              : project.progress < 100;
           });
     });
     const categorizedProjects = computed(() => {
@@ -553,6 +568,7 @@ export default defineComponent({
       onSubmit,
       onMounted,
       fileChanged,
+      search,
       removeImage,
       filteredProjects,
       deleteProject,

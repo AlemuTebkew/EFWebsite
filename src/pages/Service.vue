@@ -360,13 +360,13 @@ import { Loading, Notify } from "quasar";
 import { useRouter } from "vue-router";
 
 const columns = [
-  {
-    name: "Id",
-    label: "Id",
-    field: "id",
-    sortable: true,
-    align: "left",
-  },
+  // {
+  //   name: "Id",
+  //   label: "Id",
+  //   field: "id",
+  //   sortable: true,
+  //   align: "left",
+  // },
   {
     name: "Title",
     label: "Title",

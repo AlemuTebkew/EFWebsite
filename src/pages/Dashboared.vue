@@ -85,7 +85,44 @@ export default defineComponent({
     const { client, c_project, o_project, source, team } =
       storeToRefs(dashStore);
 
-    const options = ref({
+    // const options = ref({
+    //   legend: {
+    //     bottom: 10,
+    //   },
+    //   autoresize:true,
+    //   tooltip: {},
+    //   dataset: {
+    //     source: [
+    //          ...source.value
+
+    //       ],
+    //   },
+    //   grid: {
+    //     left: '3%',
+    //       right: '4%',
+    //       bottom: '20%',
+    //       top: '5%',
+    //       containLabel: true
+    //   },
+    //   xAxis: {type: 'category'},
+    //   yAxis: {},
+    //   // Declare several bar series, each will be mapped
+    //   // to a column of dataset.source by default.
+    //   series: [
+    //     { type: "bar" },
+    //     // {type: 'bar'},
+    //     // {type: 'bar'}
+    //   ],
+
+    // });
+
+    onBeforeMount(() => {
+      // options.value.dataset.source = source.value
+    });
+
+
+    const options=computed(()=>{
+      return   {
       legend: {
         bottom: 10,
       },
@@ -93,7 +130,7 @@ export default defineComponent({
       tooltip: {},
       dataset: {
         source: [
-
+             ...source.value
 
           ],
       },
@@ -114,11 +151,9 @@ export default defineComponent({
         // {type: 'bar'}
       ],
 
-    });
 
-    onBeforeMount(() => {
-      options.value.dataset.source = source.value
-    });
+    }
+  })
     const items = computed(() => {
       return [
         {

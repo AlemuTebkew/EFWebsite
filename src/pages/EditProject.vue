@@ -15,7 +15,7 @@
             </div>
           </q-card-section>
 
-          <q-form @submit="onSubmit">
+          <q-form @submit="saveChanges">
             <q-card-section class="q-px-lg q-mx-lg">
               <q-list
                 class="row flex-center q-lg-mx-xl q-md-mx-xl q-lg-px-xl q-md-px-xl"
@@ -46,8 +46,8 @@
                       color="white"
                       :disable="!editable"
                       dense
-                      v-model="category"
                       label="Project Category *"
+                      v-model="category"
                       :options="categories"
                       option-label="name"
                       option-value="id"
@@ -214,7 +214,7 @@
                 color="blue"
                 label="Save Changes"
                 class="q-mx-lg q-mb-xl q-pa-sm"
-                @click="saveChanges"
+                type="submit"
                 :loading="loading"
               ></q-btn>
             </q-card-section>
@@ -231,11 +231,11 @@
                   :key="index"
                   class="col-lg-6 col-md-6 col-sm-12 q-mb-sm q-gutter-sm"
                 >
-                  <div class="cont" style="position: relative" >
+                  <div class="cont" style="position: relative">
                     <q-img
                       :src="imgurl.path"
                       spinner-color="white"
-                      style="height: 400px; width: 80%;"
+                      style="height: 400px; width: 80%"
                       alt="Hello"
                     />
                     <q-btn
@@ -244,7 +244,7 @@
                       color="red"
                       icon="cancel"
                       @click="deleteImage(index, imgurl.id)"
-                      style="position: absolute; top: -5; right: -5;z-index: 3;"
+                      style="position: absolute; top: -5; right: -5; z-index: 3"
                     ></q-btn>
                   </div>
                 </div>
@@ -331,7 +331,7 @@ export default defineComponent({
     const newsStore = useNewsStore();
     const projectStore = useProjectStore();
 
-    const { categories } = storeToRefs(projectStore);
+    // const { categories } = storeToRefs(projectStore);
 
     const route = useRoute();
     const router = useRouter();
@@ -340,6 +340,7 @@ export default defineComponent({
     const oneNews = newsStore.oneNews;
     const title = ref("");
     const category = ref("");
+    const categories = ref([]);
     const description = ref("");
     const short_desc = ref("");
     const progress = ref("");
@@ -355,6 +356,8 @@ export default defineComponent({
       Loading.show();
       try {
         const response = await api.get("/projects/" + route.query.id);
+        const re = await api.get("/categories");
+        categories.value = re.data;
 
         const data = response.data;
 

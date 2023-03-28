@@ -177,12 +177,14 @@
                   <q-img
                     :src="imgurl.path"
                     spinner-color="white"
-                    style="height: 400px; width: 90%"
+                    style="height: 400px; width: 80%"
                     alt="Hello"
+
                   />
                   <q-btn
                     color="red"
                     icon="cancel"
+                    style="position: absolute;"
                     @click="deleteImage(index, imgurl.id)"
                   ></q-btn>
                 </div>

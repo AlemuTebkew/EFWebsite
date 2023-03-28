@@ -8,12 +8,12 @@
               <div class="text-h6">Job Detail</div>
 
               <div>
-                <div>Job Title :{{ applicant?.job?.title }} </div>
+                <div>Job Title :{{ applicant?.job?.title }}</div>
 
-                <div>Applied Date : {{ new Date(applicant?.job?.created_at).toDateString()}}</div>
-
-
-
+                <div>
+                  Applied Date :
+                  {{ new Date(applicant?.job?.created_at).toDateString() }}
+                </div>
               </div>
             </div>
           </q-card-section>
@@ -133,7 +133,7 @@
               <!-- <a:href="" download="download">PDF</a> -->
               <!-- <q-btn :href="applicant.cv" target="_blank"> View CV</q-btn> -->
               <div>
-                <a v-if="applicant.cv" :href="applicant.cv" download>
+                <a v-if="applicant.cv" :href="applicant.cv" download="false">
                   View CV</a
                 >
               </div>
@@ -145,6 +145,10 @@
                   >View Additional Doc</a
                 >
               </div>
+
+
+                <button clickable @click="handleClick(applicant.supporting_doc)">a pdf file</button>
+
             </div>
           </q-card-section>
         </q-card>
@@ -287,8 +291,9 @@ import { defineComponent, ref, reactive } from "vue";
 import { useRoute } from "vue-router";
 import { api } from "src/boot/axios";
 import { useQuasar, Loading } from "quasar";
-import { useDashStore } from 'src/stores/dashboard-store';
+import { useDashStore } from "src/stores/dashboard-store";
 import { storeToRefs } from "pinia";
+
 export default defineComponent({
   name: "ViewApplicant",
 
@@ -297,11 +302,11 @@ export default defineComponent({
     const applicant = ref({});
     const dash = useDashStore();
 
-    const {noti} =storeToRefs(dash)
+    const { noti } = storeToRefs(dash);
     const fetchApplicant = async () => {
       try {
         Loading.show();
-        noti.value =  noti.value.filter((n) => n.data.type !== "job");
+        noti.value = noti.value.filter((n) => n.data.type !== "job");
         const response = await api.get("/applicants/" + route.query.id);
         applicant.value = response.data;
       } catch (error) {
@@ -311,7 +316,14 @@ export default defineComponent({
     };
 
     fetchApplicant();
+
+    const handleClick=(file)=>
+    {
+      window.open(require(file), '_blank')
+
+    }
     return {
+      handleClick,
       fetchApplicant,
       applicant,
       ccolumns,
