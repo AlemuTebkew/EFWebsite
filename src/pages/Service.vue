@@ -122,11 +122,7 @@
             v-model="short_desc"
             label="Short Description *"
             maxlength="200"
-            lazy-rules
-            :rules="[
-              (val) => (val && val.length > 0) || 'Please type something',
-              (val) => val.length < 200 || 'max length 200',
-            ]"
+        
           />
           <q-editor dense v-model="description" min-height="5rem" class="" :toolbar="[
         [

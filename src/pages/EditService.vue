@@ -48,11 +48,7 @@
                       v-model="short_desc"
                       label="Shrt Description"
                       outlined
-                      lazy-rules
-                      :rules="[
-                        (val) =>
-                          (val && val.length > 0) || 'Please type something',
-                      ]"
+
                     />
                   </q-item-section>
                 </q-item>
@@ -191,7 +187,7 @@
                     style="height: 400px; width: 80%"
                     alt="Hello"
                   />
-                  <q-btn
+                  <!-- <q-btn
                     v-if="editable"
                     color="red"
                     icon="cancel"
@@ -199,7 +195,7 @@
                       position: absolute;
 
                     "
-                  ></q-btn>
+                  ></q-btn> -->
                 </div>
               </div>
             </q-card-section>

@@ -21,8 +21,7 @@
                     <q-avatar size="100px">
                       <img
                         :src="
-                          url ||
-                          'https://cdn.quasar.dev/img/boy-avatar.png'
+                          url || 'https://cdn.quasar.dev/img/boy-avatar.png'
                         "
                       />
                     </q-avatar>
@@ -127,6 +126,20 @@
                     />
                   </q-item-section>
                 </q-item>
+
+                <q-item class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <q-item-section>
+                    <q-toggle
+                    :disable="!editable"
+
+                      :model-value="user_details.is_active"
+                      @update:model-value="toggleActive()"
+                      label="Active"
+                      dense
+                      color="blue"
+                    />
+                  </q-item-section>
+                </q-item>
               </q-list>
             </q-card-section>
             <q-card-actions v-if="editable" align="right">
@@ -153,8 +166,9 @@
 import { defineComponent, ref, reactive } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { api } from "src/boot/axios";
-import { useQuasar } from "quasar";
+import { Loading, useQuasar } from "quasar";
 import { useAuthStore } from "stores/user-login-store";
+import { storeToRefs } from "pinia";
 export default defineComponent({
   name: "AddUser",
 
@@ -165,8 +179,9 @@ export default defineComponent({
       l_name: "",
       phone_no: "",
       email: "",
-
       role_id: "",
+      is_active: false,
+
     });
     const loading = ref(false);
     const editable = ref(false);
@@ -178,10 +193,14 @@ export default defineComponent({
 
     const userStore = useAuthStore();
 
-    const roles = userStore.getRoles;
+    const { roles } = storeToRefs(userStore);
 
     const fetchUser = async () => {
-      const resp = await api.get("/users/" + route.query.id);
+
+
+      Loading.show();
+      try {
+             const resp = await api.get("/users/" + route.query.id);
 
       const user = resp.data;
       console.log("user", user);
@@ -189,9 +208,17 @@ export default defineComponent({
       user_details.value.l_name = user.l_name;
       user_details.value.phone_no = user.phone_no;
       user_details.value.email = user.email;
-      user_details.value.role_id = user.role_id;
-      user_details.value.photo = user.photo;
+      user_details.value.role_id = resp.data.role.id;
+      // user_details.value.photo = user.photo;
       url.value = user.photo;
+      user_details.value.is_active = user.is_active ==1 ? true : false;
+ 
+      } catch (error) {
+        
+      }finally{
+        Loading.hide()
+      }
+
     };
     fetchUser();
     function onFileChange() {
@@ -203,26 +230,52 @@ export default defineComponent({
       loading.value = true;
 
       const formData = new FormData();
-      Object.keys(user_details.value).forEach((key) =>
-        formData.append(key, user_details.value[key])
-      );
-      formData.append("photo", photo.value);
+      Object.keys(user_details.value).forEach((key) => {
+        if (key === "is_active") {
+          const keyy = user_details.value[key] ? 1 : 0;
+          formData.append(key, keyy);
+        }else if(key === "role_id"){
+
+          if(!user_details.value[key]){
+
+            delete user_details.value[key]
+          }
+
+        }
+         else {
+          formData.append(key, user_details.value[key]);
+        }
+      });
+      if (photo.value) formData.append("photo", photo.value);
 
       // console.log("formData", formData);
       loading.value = true;
       try {
-        const response = await api.post("/users/"+route.query.id+'?_method=PUT', formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-        $q.notify({ color: "green", message: "Successfully Registerd" });
-        router.push("/user");
+        const response = await api.post(
+          "/users/" + route.query.id + "?_method=PUT",
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+        if (response.status == 200) {
+          $q.notify({ color: "green", message: "Successfully Registerd" });
+          router.push("/user");
+        }
       } catch (error) {
-        $q.notify({ color: "red", message: "Error While Registering" });
+        $q.notify({ color: "red", message: "Error While Updating" });
       } finally {
         loading.value = false;
       }
     }
+
+    const toggleActive = () => {
+      user_details.value.is_active = !user_details.value.is_active
+        ? true
+        : false;
+    };
     return {
+      toggleActive,
       user_details,
       url,
       photo,

@@ -138,7 +138,7 @@ export default defineComponent({
         if (type === "job") {
           const resp = await api.post("/read", {type:'job'});
 
-          router.push("/job");
+          router.push("/applicant");
           noti.value = noti.value.filter((n) => n.data.type !== "job");
         } else if (type == "service") {
 

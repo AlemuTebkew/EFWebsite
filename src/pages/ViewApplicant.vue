@@ -12,7 +12,7 @@
 
                 <div>
                   Applied Date :
-                  {{ new Date(applicant?.job?.created_at).toDateString() }}
+                  {{ new Date(applicant.created_at).toLocaleString() }}
                 </div>
               </div>
             </div>
@@ -126,34 +126,60 @@
         <q-separator class="q-mb-sm col-lg-12" />
 
         <q-card class="card-bg text-white col-lg-6" bordered>
-          <q-card-section class="text-h6 row justify-between">
-            <div class="">
-              <div class="text-h6">View Applicant Documents</div>
-
+          <q-card-section class="text-h6">
+            <div>View Applicant Documents</div>
+            <div class="text-h6 row justify-center">
               <!-- <a:href="" download="download">PDF</a> -->
               <!-- <q-btn :href="applicant.cv" target="_blank"> View CV</q-btn> -->
               <div>
-                <a v-if="applicant.cv" :href="applicant.cv" download="false">
-                  View CV</a
-                >
+                <q-btn v-if="applicant.cv" @click="pdfDialog(applicant.cv)">
+                  View CV Doc
+                </q-btn>
               </div>
               <div>
-                <a
+                <q-btn
                   v-if="applicant.supporting_doc"
-                  :href="applicant.supporting_doc"
-                  download
-                  >View Additional Doc</a
+                  @click="pdfDialog(applicant.supporting_doc)"
                 >
+                  View Additional Doc
+                </q-btn>
               </div>
 
-
-                <button clickable @click="handleClick(applicant.supporting_doc)">a pdf file</button>
-
+              <div>
+                <q-btn
+                  v-if="hasPermision('add shortlist')"
+                  label="Add to Shortlist"
+                  @click="shortlist()"
+                ></q-btn>
+              </div>
             </div>
           </q-card-section>
         </q-card>
       </div>
     </div>
+
+    <q-dialog v-model="show" maximized>
+      <q-card
+        class="no-scroll"
+        style="
+          background: white;
+          min-width: 95vw;
+          min-height: 100vh;
+          width: 100%;
+          height: 100%;
+        "
+      >
+        <q-bar class="bg-brand-light">
+          <h5 class="text-brand-text">{{ title }}</h5>
+          <q-space></q-space>
+          <q-btn @click="show = false" color="white" flat icon="close"></q-btn>
+        </q-bar>
+
+        <div class="fit">
+          <q-pdfviewer type="html5" :src="url" />
+        </div>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -288,27 +314,42 @@ const ccolumns = [
 ];
 
 import { defineComponent, ref, reactive } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { api } from "src/boot/axios";
-import { useQuasar, Loading } from "quasar";
+import { useQuasar, Loading, Notify } from "quasar";
 import { useDashStore } from "src/stores/dashboard-store";
 import { storeToRefs } from "pinia";
-
+// import {PdfPreview} from './PdfPreview.vue'
 export default defineComponent({
   name: "ViewApplicant",
 
+  components: {
+    //  PdfPreview,
+  },
   setup() {
     const route = useRoute();
+    const router = useRouter();
     const applicant = ref({});
+    const url = ref("");
+    const show = ref(false);
     const dash = useDashStore();
+    const created_at = ref("");
 
     const { noti } = storeToRefs(dash);
+
+    const pdfDialog = (urll) => {
+      url.value = urll;
+      show.value = true;
+      console.log("url", url.value);
+      console.log("show", show.value);
+    };
     const fetchApplicant = async () => {
       try {
         Loading.show();
         noti.value = noti.value.filter((n) => n.data.type !== "job");
         const response = await api.get("/applicants/" + route.query.id);
         applicant.value = response.data;
+        created_at.value = applicant.value.job.created_at;
       } catch (error) {
       } finally {
         Loading.hide();
@@ -317,18 +358,56 @@ export default defineComponent({
 
     fetchApplicant();
 
-    const handleClick=(file)=>
-    {
-      window.open(require(file), '_blank')
+    const handleClick = (file) => {
+      window.open(require(file), "_blank");
+    };
 
-    }
+    const shortlist = async () => {
+      try {
+        const response = await api.post("/set_liked/" + route.query.id, {
+          liked: 1,
+        });
+        if (response.status == 200) {
+          Notify.create({
+            message: "Shortlisted Added Successfully",
+            color: "green",
+          });
+          router.push("/shortlist");
+        }
+      } catch (error) {
+        Notify.create({
+          message: error.message ? error.message : "Error While Shortlisting",
+          color: "red",
+        });
+      }
+    };
+
+    const hasPermision = (sperm) => {
+      const user = JSON.parse(localStorage.getItem("user"));
+      console.log("ul", user.role.permissions);
+      if (user?.role?.permissions) {
+        console.log("ul2", user.role.permissions);
+
+        const perm = user.role?.permissions;
+        console.log("ul3", user.role.permissions);
+
+        return perm?.some((p) => p.title.toLowerCase() == sperm);
+      }
+    };
     return {
+      hasPermision,
       handleClick,
       fetchApplicant,
       applicant,
       ccolumns,
       edcolumns,
       ecolumns,
+      router,
+      shortlist,
+      pdfDialog,
+      url,
+      created_at,
+      show,
     };
   },
   methods: {},

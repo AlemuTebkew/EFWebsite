@@ -100,7 +100,7 @@
     <q-dialog v-model="showDialog" persistent>
       <q-card class="" style="width: 600px; min-height: 300px">
         <q-card-section>
-          <q-item-label class="q-mb-lg text-h6">Add New Project</q-item-label>
+          <q-item-label class="q-mb-lg text-h6">Add News</q-item-label>
         </q-card-section>
         <q-separator />
         <q-card-section class="">

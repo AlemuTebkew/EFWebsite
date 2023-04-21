@@ -317,7 +317,7 @@ export default defineComponent({
       })
         .onOk(() => {
           console.log(">>>> OK");
-          deleteNews(oneNews.id);
+          deleteNews();
         })
         .onOk(() => {
           console.log(">>>> second OK catcher");
@@ -420,15 +420,15 @@ export default defineComponent({
       }
     };
 
-    const deleteNews = async (id) => {
+    const deleteNews = async () => {
       loading.value = true;
       Loading.show();
       try {
-        const response = await api.delete("/news/" + id);
+        const response = await api.delete("/news/" +  route.query.id);
         if (response.status == 200) {
-          newsStore.deleteNews(id);
+          // newsStore.deleteNews(route.query.id);
           Notify.create({
-            message: "News Image Deleted Successfully",
+            message: "News Deleted Successfully",
             color: "green",
           });
           router.back();
@@ -436,7 +436,7 @@ export default defineComponent({
       } catch (error) {
         console.log(error);
         Notify.create({
-          message: "Error While Deleting News Image",
+          message: "Error While Deleting News",
           color: "red",
         });
       } finally {

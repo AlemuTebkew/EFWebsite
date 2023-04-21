@@ -252,8 +252,15 @@ export default defineComponent({
       loading.value = true;
 
       const formData = new FormData();
-      Object.keys(user_details.value).forEach((key) =>
-        formData.append(key, user_details.value[key])
+      Object.keys(user_details.value).forEach((key) =>{
+        if (key === "is_active") {
+         const keyy= user_details.value[key] ? 1 : 0
+          formData.append(key, keyy);
+        } else {
+          formData.append(key, user_details.value[key]);
+        }
+      }
+
       );
       formData.append("photo", photo.value);
 

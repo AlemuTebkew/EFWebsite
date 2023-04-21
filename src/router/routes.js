@@ -10,7 +10,7 @@ const routes = [
 
         return true ;
       } },
-      { path: "setting", component: () => import("src/pages/Setting.vue") },
+      { path: "pdf_preview", component: () => import("src/pages/PdfPreview.vue") },
       {
         path: "service",
         component: () => import("src/pages/Service.vue"),
@@ -328,6 +328,11 @@ const routes = [
 
           return access ? true : from.path;
         },
+      },
+      {
+        path: "shortlist",
+        component: () => import("src/pages/Shortlisted.vue"),
+
       },
       {
         path: "/astegi",

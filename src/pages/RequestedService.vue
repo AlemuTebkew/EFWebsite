@@ -89,9 +89,9 @@
         </q-item>
         <q-item>
           <q-item-section>Date</q-item-section>
-          <q-item-section>{{
-            new Date(created_at).toDateString()
-          }}</q-item-section>
+          <q-item-section>
+            {{   new Date(created_at).toLocaleString() }}
+          </q-item-section>
         </q-item>
       </q-card-section>
     </q-card></q-dialog
@@ -246,6 +246,8 @@ export default defineComponent({
         Loading.hide();
       }
     };
+
+    
     return {
       user_details: {},
       password_dict: {},

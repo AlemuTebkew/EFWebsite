@@ -22,9 +22,11 @@
             style="min-width: 200px"
             v-model="category"
             :options="['All', 'Cermony', 'Project', 'Designed', 'Certificate']"
-            class="float-right"
+            class="float-right text-white"
             label="Category"
-          />
+             color="black"
+
+            />
         </div>
       </q-card-section>
       <q-card-section class="q-mx-sm">

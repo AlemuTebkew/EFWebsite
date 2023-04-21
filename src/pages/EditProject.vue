@@ -43,16 +43,17 @@
                   <q-item-section>
                     <q-select
                       outlined
-                      color="white"
                       :disable="!editable"
-                      dense
-                      label="Project Category *"
+                      
                       v-model="category"
                       :options="categories"
-                      option-label="name"
                       option-value="id"
+                      option-label="name"
+                      color="white"
+                      dense
                       emit-value
                       map-options
+                      label="Project Category "
                       dark
                       lazy-rules
                       :rules="[(val) => val || 'Please select something']"
@@ -352,17 +353,26 @@ export default defineComponent({
     const ploading = ref(false);
     const editable = ref(false);
 
+
+    const fetchCate = async () => {
+      try {
+        const re = await api.get("/categories");
+        categories.value = re.data;
+
+      }catch(err){
+
+      }
+    }
+    fetchCate()
     const fetchProject = async () => {
       Loading.show();
       try {
         const response = await api.get("/projects/" + route.query.id);
-        const re = await api.get("/categories");
-        categories.value = re.data;
-
-        const data = response.data;
+  
+       const data = response.data;
 
         title.value = data.title;
-        category.value = data.category_id;
+        category.value = response.data.category_id*1;
         description.value = data.description;
         short_desc.value = data.short_desc;
         progress.value = data.progress;

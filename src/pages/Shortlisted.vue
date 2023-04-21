@@ -12,7 +12,7 @@
 
   <q-card v-if="!loading" class="no-shadow q-ma-sm" bordered>
     <q-card-section class="table-bg">
-      <div class="text-h6 text-white">Applicant Lists</div>
+      <div class="text-h6 text-white">Shortlisted Applicant Lists</div>
     </q-card-section>
     <q-separator color="white" />
     <q-card-section class="q-pa-none">
@@ -52,17 +52,21 @@
         <template v-slot:body-cell-Action="props">
           <q-td :props="props">
             <q-btn
+            v-if="hasPermision('view applicant')"
               icon="remove_red_eye"
               size="sm"
               flat
               :to="'/viewApplicant?id=' + props.row.id"
             />
             <q-btn
-              icon="delete"
+            v-if="hasPermision('delete shortlist')"
+              icon="cancel"
               size="sm"
               class="q-ml-sm"
-              flat
+
               dense
+              color="red"
+              label="remove"
               @click="confirmDelete(props.row.id)"
             />
           </q-td>
@@ -135,7 +139,7 @@ import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { useDashStore } from "src/stores/dashboard-store";
 export default defineComponent({
-  name: "Applicants",
+  name: "Shortlisted",
   setup() {
     const applicants = ref([]);
     const loading = ref(false);
@@ -172,17 +176,16 @@ export default defineComponent({
     const fetchApplicants = async () => {
       try {
         loading.value = true;
-        noti.value = noti.value.filter((n) => n.data.type !== "job");
 
         // Loading.show();
         console.log("res", "response.data");
-        const response = await api.get("/get_applicants");
+        const response = await api.get("/get_liked");
         // this.showDialog = false;
         applicants.value = response.data;
         const re = await api.get("/get_jobs");
         jobs.value = re.data;
         console.log("res", response.data);
-      } catch (error) { 
+      } catch (error) {
       } finally {
         // Loading.hide();
 
@@ -195,7 +198,7 @@ export default defineComponent({
       Loading.show();
       const index = applicants.value.findIndex((ap) => ap.id == id);
       try {
-        const response = await api.delete("/applicants/" + id);
+        const response = await api.post("/set_liked/" + id,{liked:0});
 
         if (response.status == 200) {
           applicants.value.splice(index, 1);
@@ -219,7 +222,21 @@ export default defineComponent({
         ? applicants.value.filter((a) => a.job_id === selected.value)
         : applicants.value;
     });
+
+    const hasPermision=(sperm)=>{
+      const user=JSON.parse(localStorage.getItem("user")) ;
+      console.log('ul', user.role.permissions)
+      if(user?.role?.permissions){
+        console.log('ul2', user.role.permissions)
+
+        const perm=user.role?.permissions
+        console.log('ul3', user.role.permissions)
+
+       return perm?.some((p)=>p.title.toLowerCase() == sperm)
+      }
+    }
     return {
+      hasPermision,
       filteredByJob,
       user_details: {},
       password_dict: {},

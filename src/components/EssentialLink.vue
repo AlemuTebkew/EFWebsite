@@ -3,7 +3,6 @@
     <q-item-label header class="text-white"> Navigations </q-item-label>
 
     <q-item
-      v-if="hasPermision('dashboard')"
       clickable
       to="/"
       exact
@@ -132,11 +131,10 @@
     </q-item>
 
     <q-expansion-item
-      class="text-bold"
+      class="text-bold q-gutter-xs"
       label="Jobs"
       icon="work"
-      v-if="hasPermision('view applicant') || hasPermision('view department') || hasPermision('view applicant') "
-
+      v-if="hasPermision('view applicant') || hasPermision('view department') || hasPermision('view applicant') || hasPermision('view shortlist') "
     >
       <q-item
         style="margin-left: 10px !important"
@@ -148,8 +146,8 @@
         <q-item-section avatar>
           <q-icon name="task" />
         </q-item-section>
-        <q-item-section avatar>
-          <q-item-label class="text-bold">Department</q-item-label>
+        <q-item-section >
+          Department
         </q-item-section>
       </q-item>
 
@@ -157,34 +155,51 @@
         v-if="hasPermision('view job')"
         clickable
         to="/job"
-        style="margin-left: 10px !important"
+        style="margin-left: 10px !important;margin-bottom: 0px !important;padding-bottom: 0px !important; padding-top: 0px !important;"
         class="text-white"
       >
         <q-item-section avatar>
           <q-icon name="work_outline" />
         </q-item-section>
-        <q-item-section avatar>
-          <q-item-label class="text-bold">Jobs</q-item-label>
+        <q-item-section>
+          Jobs
         </q-item-section>
       </q-item>
 
       <q-item
         v-if="hasPermision('view applicant')"
         clickable
-        style="margin-left: 10px !important"
+        style="margin-left: 10px !important;margin-bottom: 0px !important;padding-bottom: 0px !important; padding-top: 0px !important;"
         class="text-white"
         to="/applicant"
       >
         <q-item-section avatar>
           <q-icon name="work_outline" />
         </q-item-section>
-        <q-item-section avatar>
-          <q-item-label class="text-bold"
-            >Applicants
+        <q-item-section class="text-bold">
+          <q-item-label class="text-bold">Applicants
             <q-badge side color="red" text-color="white">
               {{ noti?.filter((no)=>no.data.type === 'job').length }}
-            </q-badge></q-item-label
+            </q-badge>
+            </q-item-label
           >
+        </q-item-section>
+      </q-item>
+      <q-item
+
+      v-if="hasPermision('view shortlist')"
+        clickable
+        style="margin-left: 10px !important;margin-bottom: 0px !important;padding-top: 0px;"
+        class="text-white"
+        to="/shortlist"
+      >
+        <q-item-section avatar>
+          <q-icon name="work_outline" />
+        </q-item-section>
+        <q-item-section class="text-bold">
+            Shortlist
+
+
         </q-item-section>
       </q-item>
     </q-expansion-item>

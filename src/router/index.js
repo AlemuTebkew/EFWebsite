@@ -37,31 +37,18 @@ export default route(function (/* { store, ssrContext } */) {
     ),
   });
 
-  // const isAuthenticated = true;
   Router.beforeEach(async (to, from, next) => {
-    // GOOD
     const store = useAuthStore();
     const token = localStorage.getItem("token");
-
-    // if(to.path == '/notfound'){
-    //   next({ name: "not"});
-    // }
-    console.log("lof", store.logedIn);
     if (to.name !== "Login" && to.name !== "Forgot" && to.name !== "Reset" && !token) {
-      // if (false) {
       next({ name: "Login", query: { to: to.path } });
     } else {
-      // store.getUser();
 
       const user = JSON.parse(localStorage.getItem("user"));
-      // if (user) {
-        //  const access= user.role?.permissions?.some((p)=>p.title.toLowerCase().includes('view '+to.path))
-
         api.defaults.headers.common.Authorization = "Bearer " + token;
         next();
-      // }
     }
-  });
+  })
 
   return Router;
 });
